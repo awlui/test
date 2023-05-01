@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Get bundle version
-        working-directory: apps/gather-react-native/ios/gather
+        # working-directory: apps/gather-react-native/ios/gather
         id: version
         run: echo "IOS_VERSION=$(/usr/libexec/PlistBuddy -c "print :CFBundleVersion" ./Info.plist)" >> $GITHUB_OUTPUT
 
