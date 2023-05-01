@@ -20,15 +20,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup node
-        uses: ./.github/actions/setup-node-environment
-        with:
-          accessKey: ${{ secrets.R2_ACTIONS_CACHE_ACCESS_KEY_ID }}
-          secretKey: ${{ secrets.R2_ACTIONS_CACHE_SECRET_ACCESS_KEY }}
-          bucket: ${{ secrets.R2_ACTIONS_CACHE_BUCKET }}
-          endpoint: ${{ secrets.R2_API_ENDPOINT }}
-          nodeModulesCachePrefix: "skipMediaSoup"
-
       - name: Get bundle version
         working-directory: apps/gather-react-native/ios/gather
         id: version
