@@ -1,0 +1,38 @@
+name: iOS e2e test
+
+on:
+  workflow_dispatch:
+  #  Disabling builds on PRs for now because of a GitHub bug that occasionally ignores the path restrictions
+  #  and causes this to run too often, causing our costs to skyrocket
+  #  pull_request:
+  #    paths:
+  #      - "apps/gather-react-native/package.json"
+  #      - "apps/gather-react-native/ios/**"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-ios-app:
+    runs-on: macos-12
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: ./.github/actions/setup-node-environment
+        with:
+          accessKey: ${{ secrets.R2_ACTIONS_CACHE_ACCESS_KEY_ID }}
+          secretKey: ${{ secrets.R2_ACTIONS_CACHE_SECRET_ACCESS_KEY }}
+          bucket: ${{ secrets.R2_ACTIONS_CACHE_BUCKET }}
+          endpoint: ${{ secrets.R2_API_ENDPOINT }}
+          nodeModulesCachePrefix: "skipMediaSoup"
+
+      - name: Get bundle version
+        working-directory: apps/gather-react-native/ios/gather
+        id: version
+        run: echo "IOS_VERSION=$(/usr/libexec/PlistBuddy -c "print :CFBundleVersion" ./Info.plist)" >> $GITHUB_OUTPUT
+
+      - name: test print
+        run: echo ${{ steps.version.outputs.IOS_VERSION }}
