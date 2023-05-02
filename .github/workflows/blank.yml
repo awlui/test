@@ -43,7 +43,7 @@ jobs:
 
       - name: Generate Prime Numbers
         if: steps.cache-primes.outputs.cache-hit != 'true'
-        run: ./generate-primes.sh -d prime-numbers
+        run: ./generate-primes.sh > prime-numbers
 
       - name: Use Prime Numbers
         run: cat prime-numbers
