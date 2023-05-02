@@ -25,6 +25,14 @@ jobs:
         id: version
         run: echo "IOS_VERSION=$(/usr/libexec/PlistBuddy -c "print :CFBundleVersion" ./Info.plist)" >> $GITHUB_OUTPUT
 
+      - name: brew
+        run: |
+          brew tap wix/brew
+          brew install applesimutils
+
+      - name: print simulators
+        run: applesimutils --list
+
       - name: test print
         run: echo ${{ steps.version.outputs.IOS_VERSION }}
 
