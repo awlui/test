@@ -36,22 +36,36 @@ jobs:
       - name: test print
         run: echo ${{ steps.version.outputs.IOS_VERSION }}
 
-      - name: pwd
-        run: pwd
-
-      - name: ls
-        run: ls
-
-      - name: Cache Primes
-        id: cache-primes
+      - name: Cache
+        id: cache-test
         uses: actions/cache@v3
         with:
-          path: prime-numbers
-          key: ${{ runner.os }}-primes
+          path: foo/bar/text.txt
+          key: ${{ runner.os }}-test
 
-      - name: Generate Prime Numbers
-        if: steps.cache-primes.outputs.cache-hit != 'true'
-        run: ./generate-primes.sh > prime-numbers
+      - name: gen
+        if: steps.cache-test.outputs.cache-hit != 'true'
+        run: mkdir -p foo/bar && echo hello > foo/bar/text.txt
 
-      - name: Use Prime Numbers
-        run: cat prime-numbers
+      - name: print
+        run: cat foo/bar/text.txt
+
+      # - name: pwd
+      #   run: pwd
+
+      # - name: ls
+      #   run: ls
+
+      # - name: Cache Primes
+      #   id: cache-primes
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: prime-numbers
+      #     key: ${{ runner.os }}-primes
+
+      # - name: Generate Prime Numbers
+      #   if: steps.cache-primes.outputs.cache-hit != 'true'
+      #   run: ./generate-primes.sh > prime-numbers
+
+      # - name: Use Prime Numbers
+      #   run: cat prime-numbers
